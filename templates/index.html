@@ -6,14 +6,14 @@
     <title>Школьное питание</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <header class="bg-primary text-white py-3">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="h4 mb-0">Школьное питание</h1>
-                <a href="#" class="btn btn-light">Личный кабинет</a>
+                <a href="{{ url_for('login') }}" class="btn btn-light">Личный кабинет</a>
             </div>
         </div>
     </header>
@@ -27,7 +27,7 @@
                 <!-- Завтрак -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Завтрак">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Завтрак">
                         <div class="card-body">
                             <h5 class="card-title">Завтрак</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Каша гречневая с молоком</h6>
@@ -39,7 +39,7 @@
                 <!-- Обед (суп) -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Суп">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Суп">
                         <div class="card-body">
                             <h5 class="card-title">Обед (Суп)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Суп куриный с лапшой</h6>
@@ -51,7 +51,7 @@
                 <!-- Обед (второе) -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Второе">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Второе">
                         <div class="card-body">
                             <h5 class="card-title">Обед (Второе)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Гречка с курицей</h6>
@@ -70,7 +70,7 @@
                 <!-- Завтрак -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Завтрак">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Завтрак">
                         <div class="card-body">
                             <h5 class="card-title">Завтрак</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Омлет с сыром</h6>
@@ -82,7 +82,7 @@
                 <!-- Обед (суп) -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Суп">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Суп">
                         <div class="card-body">
                             <h5 class="card-title">Обед (Суп)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Щи из свежей капусты</h6>
@@ -94,7 +94,7 @@
                 <!-- Обед (второе) -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Второе">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Второе">
                         <div class="card-body">
                             <h5 class="card-title">Обед (Второе)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Пюре с котлетой</h6>
@@ -113,7 +113,7 @@
                 <!-- Завтрак -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Завтрак">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Завтрак">
                         <div class="card-body">
                             <h5 class="card-title">Завтрак</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Творожная запеканка</h6>
@@ -125,7 +125,7 @@
                 <!-- Обед (суп) -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Суп">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Суп">
                         <div class="card-body">
                             <h5 class="card-title">Обед (Суп)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Рыбный суп</h6>
@@ -137,7 +137,7 @@
                 <!-- Обед (второе) -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Второе">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Второе">
                         <div class="card-body">
                             <h5 class="card-title">Обед (Второе)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Рис с овощами и рыбой</h6>
@@ -156,7 +156,7 @@
                 <!-- Завтрак -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Завтрак">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Завтрак">
                         <div class="card-body">
                             <h5 class="card-title">Завтрак</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Манная каша</h6>
@@ -168,7 +168,7 @@
                 <!-- Обед (суп) -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Суп">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Суп">
                         <div class="card-body">
                             <h5 class="card-title">Обед (Суп)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Борщ</h6>
@@ -180,7 +180,7 @@
                 <!-- Обед (второе) -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Второе">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Второе">
                         <div class="card-body">
                             <h5 class="card-title">Обед (Второе)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Гречка с гуляшом</h6>
@@ -199,7 +199,7 @@
                 <!-- Завтрак -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Завтрак">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Завтрак">
                         <div class="card-body">
                             <h5 class="card-title">Завтрак</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Овсяная каша с фруктами</h6>
@@ -211,7 +211,7 @@
                 <!-- Обед (суп) -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Суп">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Суп">
                         <div class="card-body">
                             <h5 class="card-title">Обед (Суп)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Суп-лапша</h6>
@@ -223,7 +223,7 @@
                 <!-- Обед (второе) -->
                 <div class="col-md-4">
                     <div class="card food-card">
-                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Второе">
+                        <img src="{{ url_for('static', filename='images/kawa.jpg') }}" class="card-img-top food-img" alt="Второе">
                         <div class="card-body">
                             <h5 class="card-title">Обед (Второе)</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Картофельное пюре с рыбой</h6>
@@ -235,7 +235,7 @@
             </div>
         </div>
         
-        <!-- Application Section -->
+        <!-- Форма заявления -->
         <div class="application-section">
             <div class="application-container">
                 <div class="application-info">
@@ -318,6 +318,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
 </html>
