@@ -1,0 +1,69 @@
+.food-card {
+    transition: transform 0.3s;
+    height: 100%;
+}
+.food-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.food-img {
+    height: 200px;
+    object-fit: cover;
+}
+.application-section {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 30px;
+    margin-top: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.application-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.application-info {
+    flex: 1;
+    min-width: 300px;
+    padding-right: 30px;
+}
+.application-form {
+    flex: 1;
+    min-width: 300px;
+    padding-left: 30px;
+    border-left: 1px solid #dee2e6;
+}
+.download-buttons {
+    margin-top: 20px;
+}
+.download-btn {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.special-diet {
+    display: none;
+    margin-top: 15px;
+}
+.file-upload {
+    margin-top: 15px;
+}
+.day-section {
+    margin-bottom: 30px;
+}
+.day-title {
+    border-bottom: 2px solid #0d6efd;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+@media (max-width: 768px) {
+    .application-info, .application-form {
+        padding: 0;
+        border-left: none;
+    }
+    .application-form {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #dee2e6;
+    }
+}

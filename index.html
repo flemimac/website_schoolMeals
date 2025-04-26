@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Школьное питание</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="bg-primary text-white py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h4 mb-0">Школьное питание</h1>
+                <a href="#" class="btn btn-light">Личный кабинет</a>
+            </div>
+        </div>
+    </header>
+    <main class="container my-5">
+        <h2 class="mb-4">Меню на <span id="current-month"></span></h2>
+        
+        <!-- Понедельник -->
+        <div class="day-section">
+            <h3 class="day-title">Понедельник</h3>
+            <div class="row g-4">
+                <!-- Завтрак -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Завтрак">
+                        <div class="card-body">
+                            <h5 class="card-title">Завтрак</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Каша гречневая с молоком</h6>
+                            <p class="card-text"><strong>Состав:</strong> гречка, молоко, сахар, масло сливочное</p>
+                            <p class="card-text"><small class="text-muted">Калории: 250 ккал | Б: 8г, Ж: 5г, У: 45г</small></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Обед (суп) -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Суп">
+                        <div class="card-body">
+                            <h5 class="card-title">Обед (Суп)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Суп куриный с лапшой</h6>
+                            <p class="card-text"><strong>Состав:</strong> курица, лапша, морковь, лук, зелень</p>
+                            <p class="card-text"><small class="text-muted">Калории: 200 ккал | Б: 10г, Ж: 5г, У: 25г</small></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Обед (второе) -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Второе">
+                        <div class="card-body">
+                            <h5 class="card-title">Обед (Второе)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Гречка с курицей</h6>
+                            <p class="card-text"><strong>Состав:</strong> гречка, куриное филе, лук, морковь</p>
+                            <p class="card-text"><small class="text-muted">Калории: 350 ккал | Б: 25г, Ж: 10г, У: 40г</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Вторник -->
+        <div class="day-section">
+            <h3 class="day-title">Вторник</h3>
+            <div class="row g-4">
+                <!-- Завтрак -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Завтрак">
+                        <div class="card-body">
+                            <h5 class="card-title">Завтрак</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Омлет с сыром</h6>
+                            <p class="card-text"><strong>Состав:</strong> яйца, молоко, сыр, зелень</p>
+                            <p class="card-text"><small class="text-muted">Калории: 280 ккал | Б: 15г, Ж: 20г, У: 3г</small></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Обед (суп) -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Суп">
+                        <div class="card-body">
+                            <h5 class="card-title">Обед (Суп)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Щи из свежей капусты</h6>
+                            <p class="card-text"><strong>Состав:</strong> капуста, картофель, морковь, лук, мясо</p>
+                            <p class="card-text"><small class="text-muted">Калории: 180 ккал | Б: 8г, Ж: 6г, У: 20г</small></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Обед (второе) -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Второе">
+                        <div class="card-body">
+                            <h5 class="card-title">Обед (Второе)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Пюре с котлетой</h6>
+                            <p class="card-text"><strong>Состав:</strong> картофель, молоко, масло, котлета куриная</p>
+                            <p class="card-text"><small class="text-muted">Калории: 350 ккал | Б: 18г, Ж: 15г, У: 35г</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Среда -->
+        <div class="day-section">
+            <h3 class="day-title">Среда</h3>
+            <div class="row g-4">
+                <!-- Завтрак -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Завтрак">
+                        <div class="card-body">
+                            <h5 class="card-title">Завтрак</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Творожная запеканка</h6>
+                            <p class="card-text"><strong>Состав:</strong> творог, яйца, манка, изюм, сметана</p>
+                            <p class="card-text"><small class="text-muted">Калории: 320 ккал | Б: 20г, Ж: 10г, У: 35г</small></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Обед (суп) -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Суп">
+                        <div class="card-body">
+                            <h5 class="card-title">Обед (Суп)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Рыбный суп</h6>
+                            <p class="card-text"><strong>Состав:</strong> рыба, картофель, морковь, лук, зелень</p>
+                            <p class="card-text"><small class="text-muted">Калории: 200 ккал | Б: 15г, Ж: 8г, У: 15г</small></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Обед (второе) -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Второе">
+                        <div class="card-body">
+                            <h5 class="card-title">Обед (Второе)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Рис с овощами и рыбой</h6>
+                            <p class="card-text"><strong>Состав:</strong> рис, филе рыбы, морковь, лук, специи</p>
+                            <p class="card-text"><small class="text-muted">Калории: 320 ккал | Б: 22г, Ж: 8г, У: 35г</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Четверг -->
+        <div class="day-section">
+            <h3 class="day-title">Четверг</h3>
+            <div class="row g-4">
+                <!-- Завтрак -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Завтрак">
+                        <div class="card-body">
+                            <h5 class="card-title">Завтрак</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Манная каша</h6>
+                            <p class="card-text"><strong>Состав:</strong> манка, молоко, сахар, масло сливочное</p>
+                            <p class="card-text"><small class="text-muted">Калории: 240 ккал | Б: 7г, Ж: 6г, У: 38г</small></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Обед (суп) -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Суп">
+                        <div class="card-body">
+                            <h5 class="card-title">Обед (Суп)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Борщ</h6>
+                            <p class="card-text"><strong>Состав:</strong> свекла, капуста, картофель, мясо, сметана</p>
+                            <p class="card-text"><small class="text-muted">Калории: 220 ккал | Б: 10г, Ж: 8г, У: 25г</small></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Обед (второе) -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Второе">
+                        <div class="card-body">
+                            <h5 class="card-title">Обед (Второе)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Гречка с гуляшом</h6>
+                            <p class="card-text"><strong>Состав:</strong> гречка, говядина, лук, морковь, соус</p>
+                            <p class="card-text"><small class="text-muted">Калории: 380 ккал | Б: 22г, Ж: 12г, У: 40г</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Пятница -->
+        <div class="day-section">
+            <h3 class="day-title">Пятница</h3>
+            <div class="row g-4">
+                <!-- Завтрак -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Завтрак">
+                        <div class="card-body">
+                            <h5 class="card-title">Завтрак</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Овсяная каша с фруктами</h6>
+                            <p class="card-text"><strong>Состав:</strong> овсяные хлопья, молоко, банан, яблоко</p>
+                            <p class="card-text"><small class="text-muted">Калории: 270 ккал | Б: 9г, Ж: 5г, У: 45г</small></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Обед (суп) -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Суп">
+                        <div class="card-body">
+                            <h5 class="card-title">Обед (Суп)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Суп-лапша</h6>
+                            <p class="card-text"><strong>Состав:</strong> курица, лапша, морковь, лук, зелень</p>
+                            <p class="card-text"><small class="text-muted">Калории: 190 ккал | Б: 12г, Ж: 5г, У: 20г</small></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Обед (второе) -->
+                <div class="col-md-4">
+                    <div class="card food-card">
+                        <img src="images/kawa.jpg" class="card-img-top food-img" alt="Второе">
+                        <div class="card-body">
+                            <h5 class="card-title">Обед (Второе)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Картофельное пюре с рыбой</h6>
+                            <p class="card-text"><strong>Состав:</strong> картофель, молоко, масло, рыба запеченная</p>
+                            <p class="card-text"><small class="text-muted">Калории: 340 ккал | Б: 20г, Ж: 10г, У: 35г</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Application Section -->
+        <div class="application-section">
+            <div class="application-container">
+                <div class="application-info">
+                    <h3>Информация о питании</h3>
+                    <p>Рациональное питание — один из основных факторов, ответственных за здоровье человека. Для детей школьного возраста это имеет особое значение в связи с особенностями роста и развития в этот период, а также в связи с интенсивной учебной нагрузкой.</p>
+                    <p>Обучающиеся образовательного учреждения обеспечиваются питанием в дни посещения школы.</p>
+                    
+                    <div class="download-buttons">
+                        <h5>Скачать заявление:</h5>
+                        <a href="#" class="btn btn-outline-primary download-btn">
+                            <i class="bi bi-file-earmark-pdf"></i> Скачать PDF
+                        </a>
+                        <a href="#" class="btn btn-outline-primary download-btn">
+                            <i class="bi bi-file-earmark-word"></i> Скачать DOCX
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="application-form">
+                    <h3>Форма заявки</h3>
+                    <form>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">ФИО ученика</label>
+                            <input type="text" class="form-control" id="fullName" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="class" class="form-label">Класс</label>
+                            <input type="text" class="form-control" id="class" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Тип питания</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="dietType" id="regularDiet" autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" for="regularDiet">Обычное</label>
+                                
+                                <input type="radio" class="btn-check" name="dietType" id="specialDiet" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="specialDiet">Особое</label>
+                            </div>
+                            
+                            <div id="specialDietNotes" class="mt-3 p-3 border rounded" style="display: none;">
+                                <h5 class="mb-3">Особенности питания</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Причина особого питания</label>
+                                    <select class="form-select">
+                                        <option selected>Выберите причину</option>
+                                        <option>Аллергия</option>
+                                        <option>Медицинские показания</option>
+                                        <option>Религиозные предписания</option>
+                                        <option>Другое</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dietDetails" class="form-label">Подробное описание</label>
+                                    <textarea class="form-control" id="dietDetails" rows="3" placeholder="Опишите особенности питания"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 file-upload">
+                            <label for="formFile" class="form-label">Прикрепить заявление</label>
+                            <input class="form-control" type="file" id="formFile" accept=".pdf,.docx">
+                            <div class="form-text">Форматы: PDF или DOCX</div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Отправить заявку</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Школьное питание. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
