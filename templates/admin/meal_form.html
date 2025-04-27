@@ -1,0 +1,49 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">{{ meal and 'Редактировать блюдо' or 'Добавить блюдо' }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Название</label>
+            <input type="text" name="name" class="form-control" value="{{ meal.name if meal else '' }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Описание</label>
+            <textarea name="description" class="form-control">{{ meal.description if meal else '' }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Фото</label>
+            {% if meal and meal.image %}
+                <img src="{{ url_for('static', filename='uploads/' ~ meal.image) }}" alt="Фото" width="100"><br>
+            {% endif %}
+            <input type="file" name="image" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">День недели</label>
+            <select name="weekday" class="form-select" required>
+                {% for day in ['понедельник','вторник','среда','четверг','пятница'] %}
+                    <option value="{{ day }}" {% if meal and meal.weekday == day %}selected{% endif %}>{{ day|capitalize }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Калории</label>
+            <input type="number" name="calories" class="form-control" value="{{ meal.calories if meal else '' }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Белки</label>
+            <input type="number" name="proteins" class="form-control" value="{{ meal.proteins if meal else '' }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Жиры</label>
+            <input type="number" name="fats" class="form-control" value="{{ meal.fats if meal else '' }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Углеводы</label>
+            <input type="number" name="carbs" class="form-control" value="{{ meal.carbs if meal else '' }}">
+        </div>
+        <button type="submit" class="btn btn-primary">{{ meal and 'Сохранить' or 'Добавить' }}</button>
+        <a href="{{ url_for('admin_meals') }}" class="btn btn-secondary">Назад</a>
+    </form>
+</div>
+{% endblock %}

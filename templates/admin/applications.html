@@ -1,0 +1,50 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">Заявки на питание</h2>
+    <div class="mb-3">
+        <a href="{{ url_for('admin_applications') }}" class="btn btn-outline-secondary {% if not request.args.get('status') %}active{% endif %}">Все</a>
+        <a href="{{ url_for('admin_applications', status='new') }}" class="btn btn-outline-primary {% if request.args.get('status') == 'new' %}active{% endif %}">Новые</a>
+        <a href="{{ url_for('admin_applications', status='approved') }}" class="btn btn-outline-success {% if request.args.get('status') == 'approved' %}active{% endif %}">Одобренные</a>
+        <a href="{{ url_for('admin_applications', status='rejected') }}" class="btn btn-outline-danger {% if request.args.get('status') == 'rejected' %}active{% endif %}">Отклонённые</a>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>ФИО</th>
+                <th>Класс</th>
+                <th>Дата</th>
+                <th>Тип питания</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in applications %}
+            <tr>
+                <td>{{ app.id }}</td>
+                <td>{{ app.user.full_name }}</td>
+                <td>{{ app.user.class_number }}{{ app.user.class_letter }}</td>
+                <td>{{ app.date_submitted.strftime('%d.%m.%Y') }}</td>
+                <td>
+                    {% if app.diet_type == 'regular' %}Обычное{% else %}Особое{% endif %}
+                </td>
+                <td>
+                    {% if app.status == 'new' %}
+                        <span class="badge bg-warning text-dark">Новое</span>
+                    {% elif app.status == 'approved' %}
+                        <span class="badge bg-success">Одобрено</span>
+                    {% elif app.status == 'rejected' %}
+                        <span class="badge bg-danger">Отклонено</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('admin_application_detail', app_id=app.id) }}" class="btn btn-sm btn-primary">Подробнее</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

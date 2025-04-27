@@ -1,0 +1,50 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">Заявка №{{ application.id }}</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ application.user.full_name }}</h5>
+            <p class="card-text">Класс: {{ application.user.class_number }}{{ application.user.class_letter }}</p>
+            <p class="card-text">Дата подачи: {{ application.date_submitted.strftime('%d.%m.%Y %H:%M') }}</p>
+            <p class="card-text">Тип питания: 
+                {% if application.diet_type == 'regular' %}Обычное{% else %}Особое{% endif %}
+            </p>
+            {% if application.diet_type == 'special' %}
+                <p class="card-text">Причина: {{ application.special_reason }}</p>
+                <p class="card-text">Описание: {{ application.special_details }}</p>
+            {% endif %}
+            {% if application.file %}
+                <p class="card-text">Файл: 
+                    <a href="{{ url_for('static', filename='uploads/' ~ application.file) }}" target="_blank">Скачать</a>
+                </p>
+            {% endif %}
+            <p class="card-text">Статус: 
+                {% if application.status == 'new' %}
+                    <span class="badge bg-warning text-dark">Новое</span>
+                {% elif application.status == 'approved' %}
+                    <span class="badge bg-success">Одобрено</span>
+                {% elif application.status == 'rejected' %}
+                    <span class="badge bg-danger">Отклонено</span>
+                {% endif %}
+            </p>
+            {% if application.status_reason %}
+                <p class="card-text">Причина отклонения: {{ application.status_reason }}</p>
+            {% endif %}
+        </div>
+    </div>
+    {% if application.status == 'new' %}
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Причина отклонения (если отклоняете)</label>
+            <input type="text" name="reason" class="form-control">
+        </div>
+        <button type="submit" name="action" value="approve" class="btn btn-success">Одобрить</button>
+        <button type="submit" name="action" value="reject" class="btn btn-danger">Отклонить</button>
+        <a href="{{ url_for('admin_applications') }}" class="btn btn-secondary">Назад</a>
+    </form>
+    {% else %}
+        <a href="{{ url_for('admin_applications') }}" class="btn btn-secondary">Назад</a>
+    {% endif %}
+</div>
+{% endblock %}
