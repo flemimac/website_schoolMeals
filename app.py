@@ -1,61 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
-from flask_sqlalchemy import SQLAlchemy
-import datetime
+from models import db, User, Meal, Application, Ticket
 from functools import wraps
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///school_meals.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String(150), nullable=False)
-    class_number = db.Column(db.Integer, nullable=False)
-    class_letter = db.Column(db.String(1), nullable=False)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
-    
-# Модель блюда
-class Meal(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), nullable=False)
-    description = db.Column(db.Text)
-    image = db.Column(db.String(255))
-    calories = db.Column(db.Integer)
-    proteins = db.Column(db.Integer)
-    fats = db.Column(db.Integer)
-    carbs = db.Column(db.Integer)
-    weekday = db.Column(db.String(10))
-
-# Модель заявки
-class Application(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    date_submitted = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    diet_type = db.Column(db.String(50))
-    special_reason = db.Column(db.String(120))
-    special_details = db.Column(db.Text)
-    file = db.Column(db.String(255))
-    status = db.Column(db.String(20), default='new')
-    status_reason = db.Column(db.String(255))
-
-    user = db.relationship('User', backref='applications')
-
-# Модель талона
-class Ticket(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    application_id = db.Column(db.Integer, db.ForeignKey('application.id'), nullable=False)
-    date_issued = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    active = db.Column(db.Boolean, default=True)
-
-    application = db.relationship('Application', backref='tickets')
+db.init_app(app)
 
 with app.app_context():
     db.create_all()
-
 
 
 def admin_required(f):
@@ -69,7 +30,15 @@ def admin_required(f):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    days = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница']
+    menu = {}
+    for day in days:
+        menu[day] = {
+            'breakfast': Meal.query.filter_by(weekday=day, meal_type='breakfast').all(),
+            'soup': Meal.query.filter_by(weekday=day, meal_type='soup').all(),
+            'main': Meal.query.filter_by(weekday=day, meal_type='main').all(),
+        }
+    return render_template('index.html', menu=menu)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -164,10 +133,34 @@ def admin_meals():
 @admin_required
 def admin_add_meal():
     if request.method == 'POST':
-        # Здесь обработка формы и загрузки фото
-        # ...
-        pass
-    return render_template('admin/meal_form.html')
+        meal_type = request.form['meal_type']
+        name = request.form['name']
+        weekday = request.form['weekday']
+        calories = request.form.get('calories') or 0
+        proteins = request.form.get('proteins') or 0
+        fats = request.form.get('fats') or 0
+        carbs = request.form.get('carbs') or 0
+        image_file = request.files.get('image')
+        image_filename = None
+        if image_file and image_file.filename:
+            image_filename = secure_filename(image_file.filename)
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
+            image_file.save(image_path)
+        meal = Meal(
+            meal_type=meal_type,
+            name=name,
+            weekday=weekday,
+            calories=calories,
+            proteins=proteins,
+            fats=fats,
+            carbs=carbs,
+            image=image_filename
+        )
+        db.session.add(meal)
+        db.session.commit()
+        flash('Блюдо добавлено', 'success')
+        return redirect(url_for('admin_meals'))
+    return render_template('admin/meal_form.html', meal=None)
 
 
 @app.route('/admin/meals/edit/<int:meal_id>', methods=['GET', 'POST'])
@@ -191,7 +184,6 @@ def admin_delete_meal(meal_id):
     return redirect(url_for('admin_meals'))
 
 
-# Обработка заявок
 @app.route('/admin/applications')
 @admin_required
 def admin_applications():
@@ -224,12 +216,9 @@ def admin_application_detail(app_id):
     return render_template('admin/application_detail.html', application=application)
 
 
-# Отчёты (выгрузка талонов)
 @app.route('/admin/tickets/download')
 @admin_required
 def admin_tickets_download():
-    # Здесь формируется файл (например, CSV) и отправляется пользователю
-    # Пример заглушки:
     import io, csv
     output = io.StringIO()
     writer = csv.writer(output)
