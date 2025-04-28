@@ -1,0 +1,39 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+<div class="container my-5">
+<h2 class="mb-4">Список талонов</h2>
+<div class="mb-3">
+    <a href="{{ url_for('admin_tickets') }}" class="btn btn-outline-secondary {% if not request.args.get('status') %}active{% endif %}">Все</a>
+    <a href="{{ url_for('admin_tickets', status='active') }}" class="btn btn-outline-success {% if request.args.get('status') == 'active' %}active{% endif %}">Активные</a>
+    <a href="{{ url_for('admin_tickets', status='inactive') }}" class="btn btn-outline-danger {% if request.args.get('status') == 'inactive' %}active{% endif %}">Неактивные</a>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>ФИО</th>
+            <th>Класс</th>
+            <th>Дата выдачи</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.application.user.full_name }}</td>
+            <td>{{ ticket.application.user.class_number }}{{ ticket.application.user.class_letter }}</td>
+            <td>{{ ticket.date_issued.strftime('%d.%m.%Y') }}</td>
+            <td>
+                {% if ticket.active %}
+                    <span class="badge bg-success">Активен</span>
+                {% else %}
+                    <span class="badge bg-secondary">Неактивен</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

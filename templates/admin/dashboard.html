@@ -1,27 +1,72 @@
 {% extends "admin/admin_base.html" %}
 {% block content %}
+<div class="container my-5">
 <h2 class="mb-4">Общая статистика</h2>
-<div class="row">
-    <div class="col-md-6">
-        <div class="card text-center mb-4 shadow-sm">
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    <div class="col">
+        <div class="card h-100 text-center shadow-sm">
             <div class="card-body">
-                <h5 class="card-title">Всего заявок</h5>
-                <p class="display-4">{{ total_applications }}</p>
+                <h6 class="card-title">Всего заявок</h6>
+                <p class="display-6">{{ total_applications }}</p>
+                <span class="badge bg-warning text-dark mb-1">Новых: {{ new_applications }}</span><br>
+                <span class="badge bg-success mb-1">Одобрено: {{ approved_applications }}</span><br>
+                <span class="badge bg-danger">Отклонено: {{ rejected_applications }}</span>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="card text-center mb-4 shadow-sm">
+    <div class="col">
+        <div class="card h-100 text-center shadow-sm">
             <div class="card-body">
-                <h5 class="card-title">Активных талонов</h5>
-                <p class="display-4">{{ active_tickets }}</p>
+                <h6 class="card-title">Талоны</h6>
+                <p class="display-6">{{ total_tickets }}</p>
+                <span class="badge bg-success mb-1">Активных: {{ active_tickets }}</span><br>
+                <span class="badge bg-secondary">Неактивных: {{ inactive_tickets }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100 text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title">Обычное питание</h6>
+                <p class="display-6">{{ regular_applications }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100 text-center shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title">Особое питание</h6>
+                <p class="display-6">{{ special_applications }}</p>
+                <ul class="list-unstyled small mb-0">
+                    {% for reason, count in special_reasons %}
+                        <li>{{ reason }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
 </div>
-<div class="d-flex flex-wrap gap-2">
-    <a href="{{ url_for('admin_meals') }}" class="btn btn-primary">Управление меню</a>
-    <a href="{{ url_for('admin_applications') }}" class="btn btn-primary">Заявки</a>
-    <a href="{{ url_for('admin_tickets_download') }}" class="btn btn-outline-secondary">Скачать талоны</a>
+
+<div class="card mt-4 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Заявки по классам</h5>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Класс</th>
+                    <th>Количество заявок</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for class_number, class_letter, count in class_stats %}
+                <tr>
+                    <td>{{ class_number }}{{ class_letter }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 </div>
 {% endblock %}

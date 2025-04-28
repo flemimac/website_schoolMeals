@@ -3,6 +3,7 @@ from models import db, User, Meal, Application, Ticket
 from functools import wraps
 import os
 from werkzeug.utils import secure_filename
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -115,11 +116,47 @@ def logout():
 @app.route('/admin')
 @admin_required
 def admin_dashboard():
+    # Заявки
     total_applications = Application.query.count()
+    new_applications = Application.query.filter_by(status='new').count()
+    approved_applications = Application.query.filter_by(status='approved').count()
+    rejected_applications = Application.query.filter_by(status='rejected').count()
+
+    # Талоны
+    total_tickets = Ticket.query.count()
     active_tickets = Ticket.query.filter_by(active=True).count()
-    return render_template('admin/dashboard.html',
-                           total_applications=total_applications,
-                           active_tickets=active_tickets)
+    inactive_tickets = Ticket.query.filter_by(active=False).count()
+    
+    # Обычное питание
+    regular_applications = Application.query.filter_by(diet_type='regular').count()
+
+    # Особое питание
+    special_applications = Application.query.filter_by(diet_type='special').count()
+    
+    # Топ причин особого питания
+    special_reasons = db.session.query(
+        Application.special_reason, func.count(Application.id)
+    ).filter(Application.diet_type == 'special').group_by(Application.special_reason).all()
+
+    # Классы
+    class_stats = db.session.query(
+        User.class_number, User.class_letter, func.count(Application.id)
+    ).join(Application, Application.user_id == User.id).group_by(User.class_number, User.class_letter).all()
+
+    return render_template(
+        'admin/dashboard.html',
+        total_applications=total_applications,
+        new_applications=new_applications,
+        approved_applications=approved_applications,
+        rejected_applications=rejected_applications,
+        total_tickets=total_tickets,
+        active_tickets=active_tickets,
+        inactive_tickets=inactive_tickets,
+        regular_applications=regular_applications,
+        special_applications=special_applications,
+        special_reasons=special_reasons,
+        class_stats=class_stats
+    )
 
 # Управление блюдами
 @app.route('/admin/meals')
@@ -205,7 +242,6 @@ def admin_application_detail(app_id):
         if action == 'approve':
             application.status = 'approved'
             application.status_reason = ''
-            # Выдача талона
             ticket = Ticket(application_id=application.id)
             db.session.add(ticket)
         elif action == 'reject':
@@ -231,6 +267,58 @@ def admin_tickets_download():
                      mimetype='text/csv',
                      as_attachment=True,
                      download_name='tickets.csv')
+
+
+@app.route('/submit-application', methods=['POST'])
+def submit_application():
+    full_name = request.form.get('full_name')
+    class_number = request.form.get('class_number')
+    class_letter = request.form.get('class_letter')
+    diet_type = request.form.get('diet_type')
+    special_reason = request.form.get('special_reason') if diet_type == 'special' else None
+    special_details = request.form.get('special_details') if diet_type == 'special' else None
+    file = request.files.get('file')
+
+    # Проверяем, есть ли уже такой пользователь (по ФИО и классу)
+    user = User.query.filter_by(full_name=full_name, class_number=class_number, class_letter=class_letter.upper()).first()
+    if not user:
+        user = User(
+            full_name=full_name,
+            class_number=class_number,
+            class_letter=class_letter.upper(),
+            username=f"{full_name}_{class_number}{class_letter}".replace(" ", "_"),
+            password="",
+        )
+        db.session.add(user)
+        db.session.commit()
+
+    file_name = None
+    if file and file.filename:
+        uploads_dir = os.path.join('static', 'uploads')
+        os.makedirs(uploads_dir, exist_ok=True)
+        file_name = secure_filename(file.filename)
+        file.save(os.path.join(uploads_dir, file_name))
+
+    # Создаём заявку
+    application = Application(
+        user_id=user.id,
+        diet_type=diet_type,
+        special_reason=special_reason,
+        special_details=special_details,
+        file=file_name,
+        status='new'
+    )
+    db.session.add(application)
+    db.session.commit()
+    flash('Заявка успешно отправлена!', 'success')
+    return redirect(url_for('index'))
+
+
+@app.route('/admin/tickets')
+@admin_required
+def admin_tickets():
+    tickets = Ticket.query.order_by(Ticket.date_issued.desc()).all()
+    return render_template('admin/tickets.html', tickets=tickets)
 
 
 if __name__ == '__main__':

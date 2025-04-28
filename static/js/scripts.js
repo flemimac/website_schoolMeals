@@ -1,16 +1,9 @@
 // Обработка переключения типа питания
-document.getElementById('specialDiet')?.addEventListener('change', function() {
-    const specialDietNotes = document.getElementById('specialDietNotes');
-    if (specialDietNotes) {
-        specialDietNotes.style.display = this.checked ? 'block' : 'none';
-    }
+document.getElementById('specialDiet').addEventListener('change', function() {
+    document.getElementById('specialDietNotes').style.display = this.checked ? 'block' : 'none';
 });
-
-document.getElementById('regularDiet')?.addEventListener('change', function() {
-    const specialDietNotes = document.getElementById('specialDietNotes');
-    if (specialDietNotes) {
-        specialDietNotes.style.display = 'none';
-    }
+document.getElementById('regularDiet').addEventListener('change', function() {
+    document.getElementById('specialDietNotes').style.display = 'none';
 });
 
 // Обработка отмены заявки

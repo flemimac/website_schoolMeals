@@ -45,10 +45,10 @@
                 <a class="nav-link {% if request.endpoint in ['admin_meals', 'admin_add_meal', 'admin_edit_meal'] %}active{% endif %}" href="{{ url_for('admin_meals') }}">Меню</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {% if request.endpoint in ['admin_applications', 'admin_application_detail'] %}active{% endif %}" href="{{ url_for('admin_applications') }}">Заявки</a>
+                <a class="nav-link {% if request.endpoint in ['admin_applications', 'admin_application_detail'] %}active{% endif %}" href="{{ url_for('admin_applications') }}">Заявления</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('admin_tickets_download') }}">Скачать талоны</a>
+                <a class="nav-link {% if request.endpoint == 'admin_tickets' %}active{% endif %}" href="{{ url_for('admin_tickets') }}">Талоны</a>
             </li>
         </ul>
     </nav>
