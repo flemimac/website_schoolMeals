@@ -119,6 +119,14 @@ footer {
     transition: transform 0.3s;
 }
 
+.card-log {
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+
 .card:hover {
     transform: translateY(-5px);
 }

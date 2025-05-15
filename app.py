@@ -63,7 +63,7 @@ def login():
             session['is_admin'] = False
             return redirect(url_for('personal_account'))
         else:
-            flash('Неверный логин или пароль', 'error')
+            flash('Неверный логин или пароль', 'auth')
     return render_template('login.html')
 
 
@@ -90,11 +90,11 @@ def register():
             user = User(full_name=full_name, class_number=class_number, class_letter=class_letter.upper(), username=username, password=password)
             db.session.add(user)
             db.session.commit()
-            flash('Регистрация прошла успешно! Теперь вы можете войти.', 'success')
+            flash('Регистрация прошла успешно! Теперь вы можете войти.', 'auth')
             return redirect(url_for('login'))
         except Exception:
             db.session.rollback()
-            flash('Этот логин уже занят', 'error')
+            flash('Этот логин уже занят', 'auth')
     return render_template('register.html')
 
 
@@ -102,9 +102,33 @@ def register():
 def personal_account():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
+    
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+    
+    if not user:
+        flash('Пользователь не найден', 'error')
+        return redirect(url_for('login'))
+    
+    applications = Application.query.filter_by(
+        user_id=user.id
+    ).order_by(Application.date_submitted.desc()).all()
+
+    current_application = None
+    if applications and applications[0].status == 'new':
+        current_application = applications[0]
+
+    approved_application = Application.query.filter_by(
+        user_id=user.id,
+        status='approved'
+    ).order_by(Application.date_submitted.desc()).first()
+    
     return render_template('personal-account.html', 
-                         full_name=session.get('full_name'),
-                         class_info=session.get('class_info', 'Не указан'))
+                         full_name=user.full_name,
+                         class_info=f"{user.class_number}{user.class_letter}",
+                         applications=applications,
+                         current_application=current_application,
+                         approved_application=approved_application)
 
 
 @app.route('/logout')
@@ -206,7 +230,6 @@ def admin_edit_meal(meal_id):
     meal = Meal.query.get_or_404(meal_id)
     if request.method == 'POST':
         # Здесь обработка формы и загрузки фото
-        # ...
         pass
     return render_template('admin/meal_form.html', meal=meal)
 
@@ -232,23 +255,28 @@ def admin_applications():
     return render_template('admin/applications.html', applications=applications)
 
 
-@app.route('/admin/applications/<int:app_id>', methods=['GET', 'POST'])
+@app.route('/admin/application/<int:application_id>', methods=['GET', 'POST'])
 @admin_required
-def admin_application_detail(app_id):
-    application = Application.query.get_or_404(app_id)
+def admin_application_detail(application_id):
+    application = Application.query.get_or_404(application_id)
+    
     if request.method == 'POST':
         action = request.form.get('action')
-        reason = request.form.get('reason')
         if action == 'approve':
             application.status = 'approved'
-            application.status_reason = ''
+            
+            application.user.diet_type = application.diet_type
+            
             ticket = Ticket(application_id=application.id)
             db.session.add(ticket)
         elif action == 'reject':
             application.status = 'rejected'
-            application.status_reason = reason
+            application.status_reason = request.form.get('reason', '')
+        
         db.session.commit()
+        flash('Статус заявки обновлен', 'success')
         return redirect(url_for('admin_applications'))
+    
     return render_template('admin/application_detail.html', application=application)
 
 
@@ -280,17 +308,15 @@ def submit_application():
     file = request.files.get('file')
 
     # Проверяем, есть ли уже такой пользователь (по ФИО и классу)
-    user = User.query.filter_by(full_name=full_name, class_number=class_number, class_letter=class_letter.upper()).first()
+    user = User.query.filter_by(
+        full_name=full_name,
+        class_number=class_number,
+        class_letter=class_letter.upper()
+    ).first()
+
     if not user:
-        user = User(
-            full_name=full_name,
-            class_number=class_number,
-            class_letter=class_letter.upper(),
-            username=f"{full_name}_{class_number}{class_letter}".replace(" ", "_"),
-            password="",
-        )
-        db.session.add(user)
-        db.session.commit()
+        flash('Пользователь не найден. Пожалуйста, зарегистрируйтесь сначала.', 'error')
+        return redirect(url_for('register'))
 
     file_name = None
     if file and file.filename:
@@ -299,7 +325,6 @@ def submit_application():
         file_name = secure_filename(file.filename)
         file.save(os.path.join(uploads_dir, file_name))
 
-    # Создаём заявку
     application = Application(
         user_id=user.id,
         diet_type=diet_type,
@@ -308,6 +333,7 @@ def submit_application():
         file=file_name,
         status='new'
     )
+    
     db.session.add(application)
     db.session.commit()
     flash('Заявка успешно отправлена!', 'success')
@@ -317,8 +343,49 @@ def submit_application():
 @app.route('/admin/tickets')
 @admin_required
 def admin_tickets():
-    tickets = Ticket.query.order_by(Ticket.date_issued.desc()).all()
+    status = request.args.get('status')
+    query = Ticket.query
+    
+    if status == 'active':
+        query = query.filter_by(active=True)
+    elif status == 'inactive':
+        query = query.filter_by(active=False)
+    
+    tickets = query.order_by(Ticket.date_issued.desc()).all()
     return render_template('admin/tickets.html', tickets=tickets)
+
+
+@app.route('/admin/tickets/toggle/<int:ticket_id>', methods=['POST'])
+@admin_required
+def admin_toggle_ticket(ticket_id):
+    ticket = Ticket.query.get_or_404(ticket_id)
+    ticket.active = not ticket.active
+    db.session.commit()
+    flash('Статус талона обновлен', 'success')
+    return redirect(url_for('admin_tickets'))
+
+
+@app.route('/cancel-application/<int:application_id>', methods=['POST'])
+def cancel_application(application_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    
+    application = Application.query.get_or_404(application_id)
+    
+    if application.user_id != session.get('user_id'):
+        flash('У вас нет прав для отмены этой заявки', 'error')
+        return redirect(url_for('personal_account'))
+    
+    if application.status != 'new':
+        flash('Можно отменить только новую заявку', 'error')
+        return redirect(url_for('personal_account'))
+    
+    # Удаляем заявку
+    db.session.delete(application)
+    db.session.commit()
+    
+    flash('Заявка успешно отменена', 'success')
+    return redirect(url_for('personal_account'))
 
 
 if __name__ == '__main__':

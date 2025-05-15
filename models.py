@@ -10,6 +10,7 @@ class User(db.Model):
     class_letter = db.Column(db.String(1), nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
+    diet_type = db.Column(db.String(50), default='не указан')
 
 class Meal(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -32,9 +32,40 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ full_name }}</h5>
                             <p class="card-text">Класс: {{ class_info }}</p>
-                            <p class="card-text">Тип питания: Основное</p>
+                            <p class="card-text">Тип питания: 
+                                {% if approved_application %}
+                                    {% if approved_application.diet_type == 'regular' %}
+                                        Обычный
+                                    {% elif approved_application.diet_type == 'special' %}
+                                        Особый
+                                    {% else %}
+                                        {{ approved_application.diet_type }}
+                                    {% endif %}
+                                {% else %}
+                                    Основное
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
+
+                    {% if approved_application %}
+                    <div class="card mb-4">
+                        <div class="card-header bg-success text-white">
+                            <i class="bi bi-info-circle me-2"></i>Информация о талоне
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-success mb-0">
+                                <h6 class="alert-heading mb-2">Ваша заявка одобрена!</h6>
+                                <p class="mb-0">Пожалуйста, посетите приемную для получения талона на питание.</p>
+                                <hr>
+                                <p class="mb-0 small">
+                                    <i class="bi bi-clock me-1"></i>Время работы приемной: 9:00 - 16:00<br>
+                                    <i class="bi bi-geo-alt me-1"></i>Кабинет: 101
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
                 
                 <div class="col-md-8">
@@ -44,13 +75,30 @@
                             Текущая заявка
                         </div>
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="card-title mb-0">Заявка #12345</h5>
-                                <span class="badge bg-warning text-dark">В обработке</span>
-                            </div>
-                            <p class="card-text">Дата подачи: 15.10.2023</p>
-                            <p class="card-text">Тип: Полное питание (завтрак + обед)</p>
-                            <button class="btn btn-danger btn-sm" id="cancelRequestBtn">Отменить заявку</button>
+                            {% if current_application %}
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title mb-0">Заявка #{{ current_application.id }}</h5>
+                                    <span class="badge bg-warning text-dark">В обработке</span>
+                                </div>
+                                <p class="card-text">Дата подачи: {{ current_application.date_submitted.strftime('%d.%m.%Y') }}</p>
+                                <p class="card-text">Тип: 
+                                    {% if current_application.diet_type == 'regular' %}
+                                        Обычный
+                                    {% elif current_application.diet_type == 'special' %}
+                                        Особый
+                                    {% else %}
+                                        {{ current_application.diet_type }}
+                                    {% endif %}
+                                </p>
+                                <form method="post" action="{{ url_for('cancel_application', application_id=current_application.id) }}" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите отменить заявку?')">Отменить заявку</button>
+                                </form>
+                            {% else %}
+                                <div class="text-center py-4">
+                                    <p class="mb-4">У вас нет активных заявок</p>
+                                    <a href="{{ url_for('index') }}" class="btn btn-primary">Подать заявку</a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     
@@ -60,6 +108,7 @@
                             История заявок
                         </div>
                         <div class="card-body">
+                            {% if applications %}
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -71,27 +120,38 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for app in applications %}
                                         <tr>
-                                            <td>#12344</td>
-                                            <td>10.10.2023</td>
-                                            <td>Только завтраки</td>
-                                            <td><span class="badge bg-success">Одобрено</span></td>
+                                            <td>#{{ app.id }}</td>
+                                            <td>{{ app.date_submitted.strftime('%d.%m.%Y') }}</td>
+                                            <td>
+                                                {% if app.diet_type == 'regular' %}
+                                                    Обычный
+                                                {% elif app.diet_type == 'special' %}
+                                                    Особый
+                                                {% else %}
+                                                    {{ app.diet_type }}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if app.status == 'new' %}
+                                                    <span class="badge bg-warning text-dark">В обработке</span>
+                                                {% elif app.status == 'approved' %}
+                                                    <span class="badge bg-success">Одобрено</span>
+                                                {% elif app.status == 'rejected' %}
+                                                    <span class="badge bg-danger">Отклонено</span>
+                                                {% endif %}
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td>#12340</td>
-                                            <td>05.10.2023</td>
-                                            <td>Полное питание</td>
-                                            <td><span class="badge bg-success">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>#12335</td>
-                                            <td>01.10.2023</td>
-                                            <td>Только обеды</td>
-                                            <td><span class="badge bg-danger">Отклонено</span></td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
+                            {% else %}
+                            <div class="text-center py-4">
+                                <p class="text-muted mb-0">История заявок пуста</p>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
